@@ -13,16 +13,15 @@ Plug 'zchee/deoplete-clang', {'for': 'c'}
 
 " colors
 Plug 'altercation/vim-colors-solarized'
-Plug 'tomasr/molokai'
-Plug 'morhetz/gruvbox'
 
 Plug 'neomake/neomake'
 Plug 'bitc/vim-bad-whitespace'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'Shougo/deoplete.nvim'
 Plug 'zchee/deoplete-jedi', {'for': 'python'}
 Plug 'majutsushi/tagbar'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 call plug#end()
 """""""""""""""""""""""""""""""""""""""""""""""
@@ -36,26 +35,28 @@ let g:solarized_contrast = "high"
 
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources = {}
-let g:deoplete#sources#jedi#python_path='/usr/bin/python3'
+"let g:deoplete#sources#jedi#python_path='/usr/bin/python3'
+let g:deoplete#sources#jedi#python_path='/home/ryan/.pyenv/shims/python3'
 set completeopt-=preview
-
-set dictionary+=~/.dict
-set complete+=k
 
 let g:neomake_python_flake8_maker = {'args': ['--ignore=E124,E265,E402,E501,E226']}
 let g:neomake_python_enabled_makers = ['flake8']
 autocmd! BufRead * Neomake
 autocmd! BufWritePost * Neomake
 
-let g:ctrlp_prompt_mappings = {'AcceptSelection("e")': ['<c-t>'], 'AcceptSelection("t")': ['<cr>', '<2-LeftMouse>']}
-let g:ctrlp_follow_symlinks = 1
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn|pyc)$'
+
+" FZF
+let mapleader=","
+let g:fzf_layout = { 'down': '~25%' }
+nnoremap <silent> <c-p> :Files<CR>
+inoremap <expr> <c-x><c-k> fzf#complete('cat ~/.dict')
+
 
 " remember last open lines
 if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
+
 
 " tagbar
 nmap <F8> :TagbarToggle<CR>
@@ -109,6 +110,8 @@ colorscheme solarized
 if system("uname -s") == "Darwin\n"
   set mouse=a
   set clipboard=unnamed
+else
+  set mouse-=a
 endif
 
 

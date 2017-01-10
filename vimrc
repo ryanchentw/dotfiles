@@ -42,6 +42,8 @@ colorscheme solarized
 if system("uname -s") == "Darwin\n"
   set mouse=a
   set clipboard=unnamed
+else
+  set mouse-=a
 endif
 
 
