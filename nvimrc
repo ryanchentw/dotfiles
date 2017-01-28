@@ -11,7 +11,7 @@ Plug 'fatih/vim-go', {'for': 'go'}
 Plug 'zchee/deoplete-go', {'for': 'go', 'do': 'make'}
 Plug 'zchee/deoplete-clang', {'for': 'c'}
 
-" colors
+" themes
 Plug 'altercation/vim-colors-solarized'
 
 Plug 'neomake/neomake'
@@ -35,8 +35,7 @@ let g:solarized_contrast = "high"
 
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources = {}
-"let g:deoplete#sources#jedi#python_path='/usr/bin/python3'
-let g:deoplete#sources#jedi#python_path='/home/ryan/.pyenv/shims/python3'
+let g:deoplete#sources#jedi#python_path='/usr/bin/python3'
 set completeopt-=preview
 
 let g:neomake_python_flake8_maker = {'args': ['--ignore=E124,E265,E402,E501,E226']}
@@ -46,6 +45,7 @@ autocmd! BufWritePost * Neomake
 
 
 " FZF
+let $FZF_DEFAULT_COMMAND = 'ag -g ""'
 let mapleader=","
 let g:fzf_layout = { 'down': '~25%' }
 nnoremap <silent> <c-p> :Files<CR>
