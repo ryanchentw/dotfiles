@@ -36,6 +36,7 @@ let g:solarized_contrast = "high"
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources = {}
 let g:deoplete#sources#jedi#python_path='/usr/bin/python3'
+let g:python3_host_prog = glob('~/.pyenv/versions/3.5.2/bin/python3.5')
 set completeopt-=preview
 
 let g:neomake_python_flake8_maker = {'args': ['--ignore=E124,E265,E402,E501,E226']}

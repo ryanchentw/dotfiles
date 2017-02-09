@@ -1,56 +1,47 @@
-export ZPLUG_HOME=$HOME/.zplug
+urusai () {
+    downloaded_script_dir=$HOME/.zsh-remote-scripts
 
-if ! [[ -d $ZPLUG_HOME ]]; then
-    git clone https://github.com/zplug/zplug $ZPLUG_HOME
-    FRESH_INSTALL=true
-fi
-source $ZPLUG_HOME/init.zsh
+    if [[ ! -d $downloaded_script_dir ]]; then
+        mkdir $downloaded_script_dir
+    fi
 
-zplug 'zplug/zplug', hook-build:'zplug --self-manage'
-zplug "zsh-users/zsh-syntax-highlighting"
-zplug "plugins/colored-man-pages", from:oh-my-zsh
-zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf
-zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
-#zplug "plugins/pyenv", from:oh-my-zsh, if:"[ -d $HOME/.pyenv ]"
-#zplug "plugins/rbenv", from:oh-my-zsh, if:"[ -d $HOME/.rbenv ]"
+    github_repo=$1
+    repo_file_path=$2
 
-if (($+FRESH_INSTALL)); then
-    zplug install
-    zplug clear
-fi
+    local_fname="$github_repo-$repo_file_path"
+    local_fname=${local_fname//\//-}
+    local_script_path="$downloaded_script_dir/$local_fname"
 
-zplug load
+    if [ ! -f $local_script_path ]; then
+        echo "Download $github_repo/$repo_file_path"
+        remote_script_url="https://raw.githubusercontent.com/$github_repo/master/$repo_file_path"
+        curl $remote_script_url > $local_script_path
+    fi
+    source $local_script_path
+}
 
-# if zplug failed
-# source ~/.extra.sh
-# unsetopt menu_complete   # do not autoselect the first completion entry
-# unsetopt flowcontrol
-# setopt auto_menu         # show completion menu on successive tab press
-# setopt complete_in_word
-# setopt always_to_end
-# zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|?=** r:|?=**'
-# zstyle ':completion:*' menu select
-# autoload -Uz promptinit
-# promptinit
-#
-# my-backward-delete-word() {
-#     local WORDCHARS=${WORDCHARS/\//}
-#     zle backward-delete-word
-# }
-# zle -N my-backward-delete-word
-# bindkey '^W' my-backward-delete-word
-#
-# stty sane
-# bindkey -e
+bench() {
+    for i in $(seq 1 10); do /usr/bin/time zsh -i -c exit; done
+}
+
+urusai robbyrussell/oh-my-zsh lib/completion.zsh
+urusai robbyrussell/oh-my-zsh lib/history.zsh
+urusai robbyrussell/oh-my-zsh lib/theme-and-appearance.zsh
+source ~/.extra.sh
 
 alias vi="nvim -p"
 alias vif="fzf | xargs nvim"
 export EDITOR=nvim
 export PATH=$HOME/.local/bin:$PATH
 export TERM=screen-256color
+export PYTHONIOENCODING='utf-8'
 
 PROMPT='%F{green}%1~%f %# '
 RPROMPT=" %F{yellow}%(1j.%j.)%{$reset_color%}"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='ag -g ""'
+
+#export PYENV_ROOT="$HOME/.pyenv"
+#export PATH="$PYENV_ROOT/bin:$PATH"
+#eval "$(pyenv init -)"
