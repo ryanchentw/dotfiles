@@ -27,10 +27,10 @@ bench() {
 urusai robbyrussell/oh-my-zsh lib/completion.zsh
 urusai robbyrussell/oh-my-zsh lib/history.zsh
 urusai robbyrussell/oh-my-zsh lib/theme-and-appearance.zsh
+urusai robbyrussell/oh-my-zsh lib/key-bindings.zsh
 source ~/.extra.sh
 
 alias vi="nvim -p"
-alias vif="fzf | xargs nvim"
 export EDITOR=nvim
 export PATH=$HOME/.local/bin:$PATH
 export TERM=screen-256color
@@ -40,6 +40,7 @@ PROMPT='%F{green}%1~%f %# '
 RPROMPT=" %F{yellow}%(1j.%j.)%{$reset_color%}"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_COMPLETION_TRIGGER=';'
 export FZF_DEFAULT_COMMAND='ag -g ""'
 
 #export PYENV_ROOT="$HOME/.pyenv"
