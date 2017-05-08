@@ -23,6 +23,10 @@ export PATH=$HOME/.local/bin:$PATH
 export TERM=screen-256color
 export PYTHONIOENCODING='utf-8'
 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_COMPLETION_TRIGGER=';'
+export FZF_DEFAULT_COMMAND='ag -g ""'
+
 if (($+FRESH_INSTALL)); then
     zplug install
     zplug clear

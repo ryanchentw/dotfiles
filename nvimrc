@@ -11,17 +11,19 @@ Plug 'fatih/vim-go', {'for': 'go'}
 Plug 'zchee/deoplete-go', {'for': 'go', 'do': 'make'}
 Plug 'zchee/deoplete-clang', {'for': 'c'}
 
-" themes
-Plug 'altercation/vim-colors-solarized'
+" python
+Plug 'zchee/deoplete-jedi', {'for': 'python'}
 
+" utils
+Plug 'Shougo/deoplete.nvim'
 Plug 'neomake/neomake'
 Plug 'bitc/vim-bad-whitespace'
 Plug 'tpope/vim-fugitive'
-Plug 'Shougo/deoplete.nvim'
-Plug 'zchee/deoplete-jedi', {'for': 'python'}
 Plug 'majutsushi/tagbar'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+
+Plug 'altercation/vim-colors-solarized'
 
 call plug#end()
 """""""""""""""""""""""""""""""""""""""""""""""
@@ -33,12 +35,22 @@ let g:solarized_termcolors = 256
 let g:solarized_visibility = "high"
 let g:solarized_contrast = "high"
 
+let g:python_host_prog = glob('~/venv/neovim-py2/bin/python')
+let g:python3_host_prog = glob('~/venv/neovim-py3/bin/python3')
+let g:loaded_ruby_provider = 1
+set completeopt-=preview
+set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
+
+
+" --- Plugins ---
+
+" deoplete
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources = {}
 let g:deoplete#sources#jedi#python_path='/usr/bin/python3'
-let g:python3_host_prog = glob('~/venv/neovim/bin/python3')
-set completeopt-=preview
 
+
+" neomake
 let g:neomake_python_flake8_maker = {'args': ['--ignore=E124,E265,E402,E501,E226']}
 let g:neomake_python_enabled_makers = ['flake8']
 autocmd! BufRead * Neomake
@@ -141,3 +153,4 @@ endfunction
 autocmd BufNewFile,BufRead {*} :silent call NiceTabMode()
 autocmd BufNewFile,BufRead {*.vim,*.vimrc,*.yml,*.rb,*.slim,*.md} :silent call ThinTabMode()
 autocmd BufNewFile,BufRead {*.go} :silent call FatTabMode()
+autocmd BufRead {*.mako} set ft=html
