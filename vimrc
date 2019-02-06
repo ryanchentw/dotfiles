@@ -1,5 +1,3 @@
-" --- Base ---
-
 " misc
 autocmd BufNewFile,BufRead {*.py} :set colorcolumn=79
 autocmd BufNewFile,BufRead {*.rb} :set colorcolumn=120
@@ -14,7 +12,9 @@ set ruler
 syntax enable
 
 " encoding
-" set encoding=utf-8
+if !has("nvim")
+    set encoding=utf-8
+endif
 set fileencoding=utf-8
 set fileencodings=utf-8,shift-jis,gbk,big5,euc-jp
 set termencoding=utf-8
@@ -31,14 +31,7 @@ set softtabstop=8
 set expandtab     " use spaces to instead of tabs
 set smarttab      " so smart ;)
 
-" colors
-set t_Co=256
-set background=dark
-let g:solarized_termcolors = 256
-let g:solarized_visibility = "high"
-let g:solarized_contrast = "high"
-colorscheme solarized
-
+" clip
 if system("uname -s") == "Darwin\n"
   set mouse=a
   set clipboard=unnamed
@@ -46,12 +39,30 @@ else
   set mouse-=a
 endif
 
+" let g:loaded_ruby_provider = 1
+set completeopt-=preview
+if has('nvim-0.2.0')
+  set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
+  set inccommand=split
+endif
 
-" --- Pickups ---
+" remember last open lines
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+
+" bypass the neovim feature
+if has("nvim")
+    inoremap <c-c> <esc>
+endif
+
+au BufRead,BufNewFile Makefile* set noexpandtab
+
 
 " From c9s
 map <S-H> gT
 map <S-L> gt
+
 
 " From Amir https://github.com/amireldor/amir-vim
 function! ThinTabMode()
@@ -71,4 +82,12 @@ endfunction
 
 autocmd BufNewFile,BufRead {*} :silent call NiceTabMode()
 autocmd BufNewFile,BufRead {*.vim,*.vimrc,*.yml,*.rb,*.slim,*.md} :silent call ThinTabMode()
-autocmd BufNewFile,BufRead {*.go} :silent call FatTabMode()
+autocmd BufNewFile,BufRead {*.go,Makefile*} :silent call FatTabMode()
+
+
+function! PythonDoc()
+    set iskeyword+=.
+    " nnoremap <buffer> H :<C-u>execute "!pydoc " . expand("<cword>")<CR>
+endfunction
+
+autocmd BufNewFile,BufRead {*.py} :silent call PythonDoc()
