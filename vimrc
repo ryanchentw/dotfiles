@@ -81,14 +81,13 @@ function! FatTabMode()
   set et sts=8 sw=8
 endfunction
 
-autocmd BufNewFile,BufRead {*} :silent call NiceTabMode()
-autocmd BufNewFile,BufRead {*.vim,*.vimrc,*.yml,*.rb,*.slim,*.md} :silent call ThinTabMode()
-autocmd BufNewFile,BufRead {*.go,Makefile*} :silent call FatTabMode()
-
-
 function! PythonDoc()
     set iskeyword+=.
     " nnoremap <buffer> H :<C-u>execute "!pydoc " . expand("<cword>")<CR>
 endfunction
 
+autocmd BufNewFile,BufRead {*} :silent call NiceTabMode()
+autocmd BufNewFile,BufRead {*.vim,*.vimrc,*.yml,*.rb,*.slim,*.md} :silent call ThinTabMode()
+autocmd BufNewFile,BufRead {*.go} :silent call FatTabMode()
+autocmd BufNewFile,BufRead {Makefile*} :set noexpandtab shiftwidth=8 softtabstop=0
 autocmd BufNewFile,BufRead {*.py} :silent call PythonDoc()
