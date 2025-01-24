@@ -1,0 +1,35 @@
+export Z_HOME=$HOME/.antidote
+
+if ! [[ -d $Z_HOME ]]; then
+    # antidote
+    git clone --depth=1 https://github.com/mattmc3/antidote.git ${ZDOTDIR:-~}/.antidote
+    # vim-plug
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    brew install fzf
+    brew install rust
+    ln -sf ~/.dotfiles/zsh_plugins.txt ~/.zsh_plugins.txt
+fi
+
+export PATH=$HOME/.cargo/bin:$PATH
+
+# antidote
+source ~/.antidote/antidote.zsh
+antidote load
+autoload -Uz promptinit && promptinit && prompt pure
+
+# asdf
+. "$HOME/.asdf/asdf.sh"
+fpath=(${ASDF_DIR}/completions $fpath)
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_CTRL_T_COMMAND='ag -g ""'
+export FZF_DEFAULT_COMMAND='ag -g ""'
+
+# alias vi="nvim -p"
+alias d="docker"
+alias k="kubectl"
+alias t="terraform"
+alias g="git"
+
+[ -f ~/.extra.sh ] && source ~/.extra.sh

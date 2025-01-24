@@ -1,3 +1,12 @@
+call plug#begin()
+
+Plug 'tpope/vim-fugitive'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'altercation/vim-colors-solarized'
+
+call plug#end()
+
 " misc
 autocmd BufNewFile,BufRead {*.py} :set colorcolumn=79
 autocmd BufNewFile,BufRead {*.rb} :set colorcolumn=120
@@ -86,8 +95,26 @@ function! PythonDoc()
     " nnoremap <buffer> H :<C-u>execute "!pydoc " . expand("<cword>")<CR>
 endfunction
 
+autocmd BufNewFile,BufRead {*.py} :silent call PythonDoc()
 autocmd BufNewFile,BufRead {*} :silent call NiceTabMode()
 autocmd BufNewFile,BufRead {*.vim,*.vimrc,*.yml,*.rb,*.slim,*.md} :silent call ThinTabMode()
 autocmd BufNewFile,BufRead {*.go} :silent call FatTabMode()
 autocmd BufNewFile,BufRead {Makefile*} :set noexpandtab shiftwidth=8 softtabstop=0
-autocmd BufNewFile,BufRead {*.py} :silent call PythonDoc()
+
+
+set completeopt=menu,menuone,noselect
+
+" solarized
+set t_Co=256
+set background=dark
+let g:solarized_termcolors = 256
+let g:solarized_visibility = "high"
+let g:solarized_contrast = "high"
+colorscheme solarized
+
+" FZF
+let $FZF_DEFAULT_COMMAND = 'ag -g ""'
+let mapleader=","
+let g:fzf_layout = {'down': '~25%'}
+nnoremap <silent> <c-p> :Files<CR>
+inoremap <expr> <c-x><c-k> fzf#complete('cat ~/.dict')

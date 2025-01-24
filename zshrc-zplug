@@ -10,10 +10,11 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 zplug "zsh-users/zsh-syntax-highlighting"
 zplug "plugins/colored-man-pages", from:oh-my-zsh
 zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf
-zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
+zplug "robbyrussell/oh-my-zsh"
 zplug "plugins/pyenv", from:oh-my-zsh, if:"[ -d $HOME/.pyenv ]"
 zplug "mafredri/zsh-async", from:github
 zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
+ZSH_THEME="robbyrussell"
 zplug "zsh-users/zsh-completions"
 
 if (($+FRESH_INSTALL)); then
@@ -51,5 +52,9 @@ fpath=(${ASDF_DIR}/completions $fpath)
 # initialise completions with ZSH's compinit
 autoload -Uz compinit && compinit
 export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
+. ~/.asdf/plugins/golang/set-env.zsh
+
+# personal
+export PATH="$HOME/.local/bin:$PATH"
 
 . "$HOME/.cargo/env"
